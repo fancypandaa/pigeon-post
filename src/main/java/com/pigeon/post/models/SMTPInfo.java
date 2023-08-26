@@ -14,7 +14,7 @@ import javax.persistence.Enumerated;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class STMPInfo {
+public class SMTPInfo {
     @Id
     private String Id;
     private String email;

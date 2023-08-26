@@ -3,7 +3,7 @@ package com.pigeon.post.bootstrap;
 import com.pigeon.post.models.*;
 import com.pigeon.post.repositories.ClientRepository;
 import com.pigeon.post.repositories.IMAPRepository;
-import com.pigeon.post.repositories.STMPRepository;
+import com.pigeon.post.repositories.SMTPRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 public class BootstrapTables implements CommandLineRunner {
     private final ClientRepository clientRepository;
     private final IMAPRepository imapRepository;
-    private final STMPRepository stmpRepository;
+    private final SMTPRepository SMTPRepository;
 
-    public BootstrapTables(ClientRepository clientRepository, IMAPRepository imapRepository, STMPRepository stmpRepository) {
+    public BootstrapTables(ClientRepository clientRepository, IMAPRepository imapRepository, SMTPRepository SMTPRepository) {
         this.clientRepository = clientRepository;
         this.imapRepository = imapRepository;
-        this.stmpRepository = stmpRepository;
+        this.SMTPRepository = SMTPRepository;
     }
 
     @Override
@@ -46,11 +46,11 @@ public class BootstrapTables implements CommandLineRunner {
         imapRepository.save(imapInfo).block();
     }
     public void STMPData(){
-        STMPInfo stmpInfo= STMPInfo.builder().build();
-        stmpInfo.setEmail("LOL@mai.com");
-        stmpInfo.setPassword("LOL123");
-        stmpInfo.setHostProvider(MailProvider.HOTMAIL);
-        stmpRepository.save(stmpInfo).block();
+        SMTPInfo smtpInfo = SMTPInfo.builder().build();
+        smtpInfo.setEmail("LOL@mai.com");
+        smtpInfo.setPassword("LOL123");
+        smtpInfo.setHostProvider(MailProvider.HOTMAIL);
+        SMTPRepository.save(smtpInfo).block();
     }
 
 }
