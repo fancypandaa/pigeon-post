@@ -4,8 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,8 +16,9 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SMTPInfo {
-    @Id
+    @MongoId
     private String Id;
+    @Indexed(unique = true)
     private String email;
     private String password;
     @Enumerated(value = EnumType.STRING)

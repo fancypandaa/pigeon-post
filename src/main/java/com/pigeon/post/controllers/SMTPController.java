@@ -1,6 +1,5 @@
 package com.pigeon.post.controllers;
 
-import com.pigeon.post.models.IMAPInfo;
 import com.pigeon.post.models.SMTPInfo;
 import com.pigeon.post.repositories.SMTPRepository;
 import org.reactivestreams.Publisher;
@@ -26,17 +25,17 @@ public class SMTPController {
     }
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/api/v1/smtp/{id}")
-    Mono<SMTPInfo> SMTPById(@PathVariable String Id){
-        return smtpRepository.findById(Id);
+    Mono<SMTPInfo> SMTPById(@PathVariable String id){
+        return smtpRepository.findById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("api/v1/smtp")
-    Mono<Void> createNewSMTP(@RequestBody Publisher<SMTPInfo> smtpInfoPublisher){
-        return smtpRepository.saveAll(smtpInfoPublisher).then();
+    @PostMapping("/api/v1/smtp")
+    Mono<Void> createNewSMTP(@RequestBody SMTPInfo smtpInfo){
+        return smtpRepository.save(smtpInfo).then();
     }
     @ResponseStatus(HttpStatus.CREATED)
-    @PutMapping("api/v1/smtp/{id}")
+    @PutMapping("/api/v1/smtp/{id}")
     Mono<SMTPInfo> updateSMTP(@PathVariable String id,@RequestBody SMTPInfo smtpInfoPublisher){
         smtpInfoPublisher.setId(id);
         return smtpRepository.save(smtpInfoPublisher);
@@ -45,7 +44,9 @@ public class SMTPController {
     @PatchMapping("api/v1/smtp/{id}")
     Mono<SMTPInfo> patchSMTP(@PathVariable String id,@RequestBody SMTPInfo smtpInfoPublisher){
         SMTPInfo smtpInfo= smtpRepository.findById(id).block();
-        if(smtpInfo.getEmail() != smtpInfoPublisher.getEmail() || smtpInfo.getPassword() != smtpInfoPublisher.getPassword()){
+        if(smtpInfo.getEmail() != smtpInfoPublisher.getEmail() && smtpInfo.getPassword() != smtpInfoPublisher.getPassword()){
+            smtpInfo.setEmail(smtpInfo.getEmail());
+            smtpInfo.setPassword(smtpInfo.getPassword());
             smtpRepository.save(smtpInfo);
         }
         return Mono.just(smtpInfo);
