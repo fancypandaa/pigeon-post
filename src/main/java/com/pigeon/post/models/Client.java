@@ -6,9 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
 
 @Data
 @Document
@@ -16,12 +18,12 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Client {
-    @Id
-    private String Id;
+    @MongoId
+    private String id;
     private String businessName;
     private String businessType;
     @Enumerated(value = EnumType.STRING)
     private PricePackage pricePackage;
-    private String Status;
+    private String status;
     private String alias;
 }
