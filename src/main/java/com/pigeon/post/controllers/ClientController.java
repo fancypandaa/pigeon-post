@@ -32,27 +32,28 @@ public class ClientController {
     Mono<Void> create(@RequestBody Client clientStream){
         return clientRepository.save(clientStream).then();
     }
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/api/v1/clients/{id}")
     Mono<Client> updateClient(@PathVariable String id,@RequestBody Client clientPublisher){
         clientPublisher.setId(id);
         return clientRepository.save(clientPublisher);
     }
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/api/v1/clients/{id}")
     Mono<Client> patchClient(@PathVariable String id,@RequestBody Client clientPublisher){
         Client client= clientRepository.findById(id).block();
-        if(!client.getAlias().equals(clientPublisher.getAlias())){
+        if(client.getAlias()!=clientPublisher.getAlias()){
             client.setAlias(client.getAlias());
         }
-        if(!client.getPricePackage().equals(clientPublisher.getPricePackage())){
+        if(client.getPricePackage()!=clientPublisher.getPricePackage()){
             client.setPricePackage(clientPublisher.getPricePackage());
         }
         clientRepository.save(client);
 
         return Mono.just(client);
     }
-    @ResponseStatus(HttpStatus.GONE)
+
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/api/v1/clients/{id}")
     Mono<Void> deleteClient(@PathVariable String id){
         return clientRepository.deleteById(id).then();
