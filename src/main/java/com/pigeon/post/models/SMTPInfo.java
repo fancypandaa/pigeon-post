@@ -17,7 +17,7 @@ import javax.persistence.Enumerated;
 @AllArgsConstructor
 public class SMTPInfo {
     @MongoId
-    private String Id;
+    private String id;
     @Indexed(unique = true)
     private String email;
     private String password;
