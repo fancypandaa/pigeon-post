@@ -6,7 +6,7 @@ import com.pigeon.post.repositories.IMAPRepository;
 import com.pigeon.post.repositories.SMTPRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
+import java.util.Optional;
 @Component
 public class BootstrapTables implements CommandLineRunner {
     private final ClientRepository clientRepository;
@@ -27,12 +27,24 @@ public class BootstrapTables implements CommandLineRunner {
 //        STMPData();
     }
     public void clientData(){
-        Client client = Client.builder().build();
+        Client client = new Client();
         client.setAlias("LOL");
         client.setStatus("Verified");
         client.setBusinessName("LOL");
         client.setPricePackage(PricePackage.FREE);
         client.setBusinessType("Sport");
+        Optional<IMAPInfo> imapInfoOptional= imapRepository.findById("64ed176dfb1470579e229216").blockOptional();
+        if(!imapInfoOptional.isPresent()){
+            throw new RuntimeException("Expected imapInfoOptional Not Found");
+        }
+        Optional<SMTPInfo> smtpInfoOptional= SMTPRepository.findById("64ecb800ae8a5b15d3c2ee23").blockOptional();
+        if(!smtpInfoOptional.isPresent()){
+            throw new RuntimeException("Expected imapInfoOptional Not Found");
+        }
+//
+        client.getSMTPs().add(smtpInfoOptional.get());
+        client.getIMAPs().add(imapInfoOptional.get());
+
         clientRepository.save(client).block();
     }
 
