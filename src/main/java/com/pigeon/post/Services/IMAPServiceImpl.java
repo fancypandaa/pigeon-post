@@ -30,7 +30,7 @@ public class IMAPServiceImpl implements IMAPService{
 
     @Override
     public Mono<Boolean> isExistIMAPtByEmail(String email) {
-        IMAPInfo imapInfo = imapRepository.findIMAPInfoByEmail(email).block();
+        IMAPInfo imapInfo = imapRepository.findIMAPInfoByEmail(email);
         if(imapInfo != null){
             return Mono.just(false);
         }
