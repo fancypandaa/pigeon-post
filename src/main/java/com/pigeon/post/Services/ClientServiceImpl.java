@@ -24,8 +24,8 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public Mono<Void> createNewClient(Client client) {
-        return clientRepository.save(client).then();
+    public Mono<Client> createNewClient(Client client) {
+        return clientRepository.save(client);
     }
 
     @Override
