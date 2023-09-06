@@ -1,5 +1,6 @@
 package com.pigeon.post.controllers;
 
+import com.pigeon.post.Services.IMAPService;
 import com.pigeon.post.models.Client;
 import com.pigeon.post.models.IMAPInfo;
 import com.pigeon.post.repositories.ClientRepository;
@@ -12,58 +13,42 @@ import reactor.core.publisher.Mono;
 
 @RestController
 public class iMAPController {
-    private final IMAPRepository imapRepository;
-    private final ClientRepository clientRepository;
+    private final IMAPService imapService;
 
-    public iMAPController(IMAPRepository imapRepository, ClientRepository clientRepository) {
-        this.imapRepository = imapRepository;
-        this.clientRepository = clientRepository;
+    public iMAPController(IMAPService imapService) {
+        this.imapService = imapService;
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/api/v1/imap")
     Flux<IMAPInfo> iMAPList(){
-        return imapRepository.findAll();
+        return imapService.listAllIMap();
     }
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/api/v1/imap/{id}")
     Mono<IMAPInfo> iMAPById(@PathVariable String id){
-        return imapRepository.findById(id);
+        return imapService.getIMAPtById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/api/v1/imap/{clientId}")
     @Transactional
     Mono<IMAPInfo> createNewImap(@PathVariable String clientId,@RequestBody IMAPInfo imapInfo){
-        Client client  = clientRepository.findById(clientId).block();
-        if(client.getId() == null) return Mono.empty();
-        else{
-            client.addiMAPs(imapInfo);
-            Client client1 =clientRepository.save(client).block();
-        }
-       return imapRepository.save(imapInfo);
+        return imapService.createNewIMAP(imapInfo,clientId);
     }
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/api/v1/imap/{id}")
     Mono<IMAPInfo> updateIMAP(@PathVariable String id,@RequestBody IMAPInfo imapInfo){
-        imapInfo.setId(id);
-        return imapRepository.save(imapInfo);
+        return imapService.updateIMAP(id,imapInfo);
     }
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/api/v1/imap/{id}")
     Mono<IMAPInfo> patchIMAP(@PathVariable String id,@RequestBody IMAPInfo imapInfoPublisher){
-        IMAPInfo imapInfo= imapRepository.findById(id).block();
-
-        if(imapInfo.getPassword() != imapInfoPublisher.getPassword() && imapInfo.getEmail() == imapInfoPublisher.getEmail() ){
-            imapInfo.setPassword(imapInfoPublisher.getPassword());
-        }
-        if(imapInfo.getUsage() != imapInfoPublisher.getUsage()){
-            imapInfo.setUsage(imapInfoPublisher.getUsage());
-        }
-        if(imapInfo.getStorage() != imapInfoPublisher.getStorage()){
-            imapInfo.setStorage(imapInfoPublisher.getStorage());
-        }
-        imapRepository.save(imapInfo);
-        return Mono.just(imapInfo);
+        return imapService.patchIMAP(id,imapInfoPublisher);
+    }
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/api/v1/clients/{id}")
+    Mono<Void> deleteIMAP(@PathVariable String id){
+        return imapService.removeIMAP(id);
     }
 }
