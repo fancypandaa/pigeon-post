@@ -24,10 +24,8 @@ public class Client {
     private PricePackage pricePackage;
     private String status;
     private String alias;
-    @DocumentReference
-    private Set<IMAPInfo> iMAPs=new HashSet<>();
-    @DocumentReference
-    private Set<SMTPInfo> sMTPs=new HashSet<>();
+    private List<IMAPInfo> iMAPs=new ArrayList<>();
+    private List<SMTPInfo> sMTPs=new ArrayList<>();
 
     public Client addiMAPs(IMAPInfo iMAP){
         this.iMAPs.add(iMAP);

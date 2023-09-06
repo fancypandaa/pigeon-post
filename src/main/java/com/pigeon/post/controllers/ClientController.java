@@ -1,8 +1,8 @@
 package com.pigeon.post.controllers;
 
+import com.pigeon.post.Services.ClientService;
 import com.pigeon.post.models.Client;
 import com.pigeon.post.repositories.ClientRepository;
-import org.reactivestreams.Publisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -10,52 +10,43 @@ import reactor.core.publisher.Mono;
 
 @RestController
 public class ClientController {
-    private final ClientRepository clientRepository;
+    private final ClientService clientService;
 
 
-    public ClientController(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
     }
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/api/v1/clients")
     Flux<Client> clientList(){
-      return clientRepository.findAll();
+      return clientService.listAllClients();
     }
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/api/v1/clients/{id}")
     Mono<Client> getClientById(@PathVariable String id){
-        return clientRepository.findById(id);
+        return clientService.getClientById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/api/v1/clients")
     Mono<Void> create(@RequestBody Client clientStream){
-        return clientRepository.save(clientStream).then();
+        return clientService.createNewClient(clientStream).then();
     }
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/api/v1/clients/{id}")
     Mono<Client> updateClient(@PathVariable String id,@RequestBody Client clientPublisher){
-        clientPublisher.setId(id);
-        return clientRepository.save(clientPublisher);
+        return clientService.updateClient(id,clientPublisher);
     }
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/api/v1/clients/{id}")
     Mono<Client> patchClient(@PathVariable String id,@RequestBody Client clientPublisher){
-        Client client= clientRepository.findById(id).block();
-        if(client.getAlias()!=clientPublisher.getAlias()){
-            client.setAlias(client.getAlias());
-        }
-        if(client.getPricePackage()!=clientPublisher.getPricePackage()){
-            client.setPricePackage(clientPublisher.getPricePackage());
-        }
-        clientRepository.save(client);
-
-        return Mono.just(client);
+        return clientService.patchClient(id,clientPublisher);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/api/v1/clients/{id}")
     Mono<Void> deleteClient(@PathVariable String id){
-        return clientRepository.deleteById(id).then();
+        return clientService.removeClient(id);
     }
 }
