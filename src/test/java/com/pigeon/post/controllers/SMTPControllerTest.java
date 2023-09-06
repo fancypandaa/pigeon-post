@@ -1,5 +1,8 @@
 package com.pigeon.post.controllers;
 
+import com.pigeon.post.Services.SMTPService;
+import com.pigeon.post.Services.SMTPServiceImpl;
+import com.pigeon.post.mail.sender.MailSubject;
 import com.pigeon.post.models.Client;
 import com.pigeon.post.models.MailProvider;
 import com.pigeon.post.models.SMTPInfo;
@@ -12,20 +15,21 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import static org.mockito.ArgumentMatchers.any;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import org.mockito.Mockito;
+
 class SMTPControllerTest {
     WebTestClient webTestClient;
     SMTPRepository smtpRepository;
     SMTPController smtpController;
     ClientRepository clientRepository;
+    SMTPService smtpService;
     @BeforeEach
     void setUp() {
         smtpRepository = Mockito.mock(SMTPRepository.class);
         clientRepository = Mockito.mock(ClientRepository.class);
-        smtpController =new SMTPController(smtpRepository,clientRepository);
+        smtpService = new SMTPServiceImpl(smtpRepository,clientRepository);
+        smtpController =new SMTPController(smtpService);
         webTestClient =WebTestClient.bindToController(smtpController).build();
     }
 
