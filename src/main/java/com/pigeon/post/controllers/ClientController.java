@@ -30,8 +30,8 @@ public class ClientController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/api/v1/clients")
-    Mono<Void> create(@RequestBody Client clientStream){
-        return clientService.createNewClient(clientStream).then();
+    Mono<Client> create(@RequestBody Client clientStream){
+        return clientService.createNewClient(clientStream);
     }
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/api/v1/clients/{id}")
