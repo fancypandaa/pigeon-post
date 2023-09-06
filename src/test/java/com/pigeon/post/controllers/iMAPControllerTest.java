@@ -1,5 +1,7 @@
 package com.pigeon.post.controllers;
 
+import com.pigeon.post.Services.IMAPService;
+import com.pigeon.post.Services.IMAPServiceImpl;
 import com.pigeon.post.models.Client;
 import com.pigeon.post.models.IMAPInfo;
 import com.pigeon.post.models.MailProvider;
@@ -22,13 +24,14 @@ class iMAPControllerTest {
 
     WebTestClient webTestClient;
     IMAPRepository imapRepository;
+    IMAPService imapService;
     iMAPController iMAPController;
     ClientRepository clientRepository;
     @BeforeEach
     void setUp() {
         imapRepository = Mockito.mock(IMAPRepository.class);
         clientRepository = Mockito.mock(ClientRepository.class);
-        iMAPController =new iMAPController(imapRepository,clientRepository);
+        imapService = new IMAPServiceImpl(imapRepository,clientRepository);
         webTestClient = WebTestClient.bindToController(iMAPController).build();
     }
 
