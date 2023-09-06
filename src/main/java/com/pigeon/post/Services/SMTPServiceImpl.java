@@ -5,9 +5,10 @@ import com.pigeon.post.models.IMAPInfo;
 import com.pigeon.post.models.SMTPInfo;
 import com.pigeon.post.repositories.ClientRepository;
 import com.pigeon.post.repositories.SMTPRepository;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
+@Service
 public class SMTPServiceImpl implements SMTPService{
 
     private final SMTPRepository smtpRepository;
@@ -30,7 +31,7 @@ public class SMTPServiceImpl implements SMTPService{
 
     @Override
     public Mono<Boolean> isExistSMTPByEmail(String email) {
-        SMTPInfo smtpInfo = smtpRepository.findSMTPInfoByEmail(email).block();
+        SMTPInfo smtpInfo = smtpRepository.findSMTPInfoByEmail(email);
         if(smtpInfo != null){
             return Mono.just(false);
         }

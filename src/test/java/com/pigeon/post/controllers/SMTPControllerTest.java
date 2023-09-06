@@ -10,6 +10,7 @@ import com.pigeon.post.repositories.ClientRepository;
 import com.pigeon.post.repositories.SMTPRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
@@ -22,6 +23,7 @@ class SMTPControllerTest {
     WebTestClient webTestClient;
     SMTPRepository smtpRepository;
     SMTPController smtpController;
+    @Mock
     ClientRepository clientRepository;
     SMTPService smtpService;
     @BeforeEach
@@ -55,8 +57,6 @@ class SMTPControllerTest {
 
     @Test
     void createNewSMTP() {
-        given(clientRepository.findById(anyString()))
-                .willReturn(Mono.just(Client.builder().build()));
 
         given(smtpRepository.save(any(SMTPInfo.class)))
                 .willReturn(Mono.just(SMTPInfo.builder().build()));

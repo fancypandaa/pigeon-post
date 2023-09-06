@@ -6,6 +6,6 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Mono;
 
 public interface SMTPRepository extends ReactiveMongoRepository<SMTPInfo,String> {
-    Mono<SMTPInfo> findSMTPInfoByEmail(String email);
+    SMTPInfo findSMTPInfoByEmail(String email);
 
 }
