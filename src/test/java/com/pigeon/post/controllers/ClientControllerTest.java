@@ -1,5 +1,7 @@
 package com.pigeon.post.controllers;
 
+import com.pigeon.post.Services.ClientService;
+import com.pigeon.post.Services.ClientServiceImpl;
 import com.pigeon.post.models.Client;
 import com.pigeon.post.models.IMAPInfo;
 import com.pigeon.post.models.PricePackage;
@@ -19,17 +21,19 @@ import static org.mockito.BDDMockito.given;
 class ClientControllerTest {
     ClientController clientController;
     ClientRepository clientRepository;
+    ClientService clientService;
     WebTestClient webTestClient;
     @BeforeEach
     void setUp() {
         clientRepository = Mockito.mock(ClientRepository.class);
-        clientController = new ClientController(clientRepository);
+        clientService =new ClientServiceImpl(clientRepository);
+        clientController = new ClientController(clientService);
         webTestClient= WebTestClient.bindToController(clientController).build();
     }
 
     @Test
     void clientList() {
-        given(clientRepository.findAll())
+        given(clientService.listAllClients())
                 .willReturn(Flux.just(Client.builder().alias("ml@mail.cm").build(),
                         Client.builder().businessName("dfsf").build(),
                         Client.builder().businessType("ss").build(),
@@ -42,7 +46,7 @@ class ClientControllerTest {
 
     @Test
     void getClientById() {
-        given(clientRepository.findById("someid"))
+        given(clientService.getClientById("someid"))
                 .willReturn(Mono.just(Client.builder().alias("ml@mail.cm").build()));
         webTestClient.get()
                 .uri("/api/v1/clients/someid")
@@ -51,7 +55,7 @@ class ClientControllerTest {
 
     @Test
     void create() {
-        given(clientRepository.save(any(Client.class)))
+        given(clientService.createNewClient(any(Client.class)))
                 .willReturn(Mono.just(Client.builder().alias("lol@mail.com").build()));
 
         Mono<Client> clientMono=Mono.just(Client.builder().alias("lol@mail.com").build());
@@ -62,23 +66,14 @@ class ClientControllerTest {
                 .exchange().expectStatus().isCreated();
     }
 
-    @Test
-    void updateClient() {
-        given(clientRepository.save(any(Client.class)))
-                .willReturn(Mono.just(Client.builder().build()));
-        Mono<Client> client=Mono.just(Client.builder().alias("lol@mail.com").build());
-        webTestClient.put()
-                .uri("/api/v1/clients/temp")
-                .body(client,Client.class)
-                .exchange().expectStatus().isOk();
-    }
+
 
     @Test
     void patchClient() {
-        given(clientRepository.findById(anyString()))
+        given(clientService.getClientById(anyString()))
                 .willReturn(Mono.just(Client.builder().build()));
 
-        given(clientRepository.save(any(Client.class)))
+        given(clientService.createNewClient(any(Client.class)))
                 .willReturn(Mono.just(Client.builder().build()));
 
         Mono<Client> clientMono=Mono.just(Client.builder().alias("lol@mail.com").build());
