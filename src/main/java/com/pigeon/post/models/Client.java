@@ -1,9 +1,9 @@
 package com.pigeon.post.models;
 
+import com.mongodb.lang.NonNull;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import javax.persistence.EnumType;
@@ -24,10 +24,10 @@ public class Client {
     private PricePackage pricePackage;
     private String status;
     private String alias;
-    @DocumentReference
-    private Set<IMAPInfo> iMAPs=new HashSet<>();
-    @DocumentReference
-    private Set<SMTPInfo> sMTPs=new HashSet<>();
+    @DBRef
+    private List<IMAPInfo> iMAPs;
+    @DBRef
+    private List<SMTPInfo> sMTPs;
 
     public Client addiMAPs(IMAPInfo iMAP){
         this.iMAPs.add(iMAP);
