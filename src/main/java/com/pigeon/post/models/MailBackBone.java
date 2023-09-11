@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import java.util.*;
@@ -23,8 +24,8 @@ public class MailBackBone {
      */
     @MongoId
     String id;
-
     String rootMessageId;
+
     ArrayList<String> messagesIdMirror=new ArrayList<>(); // ex: ^x~y~~z~~m
     ArrayList<String> replyIds=new ArrayList<>();
     ArrayList<String> forwardIds=new ArrayList<>();
