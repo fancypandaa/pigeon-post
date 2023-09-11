@@ -1,14 +1,15 @@
 package com.pigeon.post.Services;
 
 import com.pigeon.post.models.Client;
-import com.pigeon.post.models.IMAPInfo;
 import com.pigeon.post.models.SMTPInfo;
 import com.pigeon.post.repositories.ClientRepository;
 import com.pigeon.post.repositories.SMTPRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 @Service
+@Slf4j
 public class SMTPServiceImpl implements SMTPService{
 
     private final SMTPRepository smtpRepository;
@@ -30,25 +31,26 @@ public class SMTPServiceImpl implements SMTPService{
     }
 
     @Override
-    public Mono<Boolean> isExistSMTPByEmail(String email) {
-        SMTPInfo smtpInfo = smtpRepository.findSMTPInfoByEmail(email);
+    public Boolean isExistSMTPByEmail(String email) {
+        SMTPInfo smtpInfo = smtpRepository.findSMTPInfoByEmail(email).blockFirst();
         if(smtpInfo != null){
-            return Mono.just(false);
+            return false;
         }
-        return Mono.just(true);    }
+        return true;
+    }
 
     @Override
     public Mono<SMTPInfo> createNewSMTPInfo(SMTPInfo smtpInfo, String clientId) {
-        if(isExistSMTPByEmail(smtpInfo.getEmail()).block() == true){
-          return null;
+        if(isExistSMTPByEmail(smtpInfo.getEmail()) != true){
+            log.error("The email u selected Already exist");
+            return null;
         }
         Client client  = clientRepository.findById(clientId).block();
         if(client.getId() == null) return Mono.empty();
-        else{
-            client.addsMTP(smtpInfo);
-            Client client1 =clientRepository.save(client).block();
-        }
-        return smtpRepository.save(smtpInfo);
+        SMTPInfo smtpInfo1 =smtpRepository.save(smtpInfo).block();
+        client.addsMTP(smtpInfo1);
+        clientRepository.save(client).block();
+        return Mono.just(smtpInfo1);
     }
 
     @Override
@@ -60,18 +62,21 @@ public class SMTPServiceImpl implements SMTPService{
     @Override
     public Mono<SMTPInfo> patchSMTP(String id, SMTPInfo smtpInfoPublisher) {
         SMTPInfo smtpInfo= smtpRepository.findById(id).block();
-        if(smtpInfo.getEmail() == smtpInfoPublisher.getEmail() && smtpInfo.getPassword() != smtpInfoPublisher.getPassword()){
-            smtpInfo.setEmail(smtpInfo.getEmail());
-            smtpInfo.setPassword(smtpInfo.getPassword());
+
+        if((smtpInfo.getPassword() != smtpInfoPublisher.getPassword()
+                && smtpInfoPublisher.getPassword() != null)){
+            System.out.println("LOLO SMTP WAS UPDATED!!");
+            smtpInfo.setEmail(smtpInfoPublisher.getEmail());
+            smtpInfo.setPassword(smtpInfoPublisher.getPassword());
         }
 
-        smtpRepository.save(smtpInfo);
+        smtpRepository.save(smtpInfo).block();
 
         return Mono.just(smtpInfo);
     }
-
-    @Override
-    public Mono<Void> removeSMTP(String id) {
-        return smtpRepository.deleteById(id);
-    }
+//
+//    @Override
+//    public Mono<Void> removeSMTP(String id) {
+//        return smtpRepository.deleteById(id);
+//    }
 }

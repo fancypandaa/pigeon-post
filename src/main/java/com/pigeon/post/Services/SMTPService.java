@@ -8,9 +8,9 @@ import reactor.core.publisher.Mono;
 public interface SMTPService {
     Flux<SMTPInfo> listAllSMTP();
     Mono<SMTPInfo> getSMTPById(String id);
-    Mono<Boolean> isExistSMTPByEmail(String email);
+    Boolean isExistSMTPByEmail(String email);
     Mono<SMTPInfo> createNewSMTPInfo(SMTPInfo smtpInfo,String clientId);
     Mono<SMTPInfo> updateSMTPInfo(String id,SMTPInfo smtpInfo);
     Mono<SMTPInfo> patchSMTP(String id,SMTPInfo smtpInfo);
-    Mono<Void> removeSMTP(String id);
+//    Mono<Void> removeSMTP(String id);
 }

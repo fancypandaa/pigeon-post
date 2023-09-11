@@ -1,10 +1,7 @@
 package com.pigeon.post.controllers;
 
 import com.pigeon.post.Services.SMTPService;
-import com.pigeon.post.models.Client;
 import com.pigeon.post.models.SMTPInfo;
-import com.pigeon.post.repositories.ClientRepository;
-import com.pigeon.post.repositories.SMTPRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
