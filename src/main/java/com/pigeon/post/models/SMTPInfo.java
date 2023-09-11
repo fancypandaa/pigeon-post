@@ -16,11 +16,16 @@ import javax.persistence.Enumerated;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class SMTPInfo {
     @MongoId
     private String id;
+    @Nullable
     private String email;
     private String password;
     @Enumerated(value = EnumType.STRING)
     private MailProvider hostProvider;
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
+
 }

@@ -69,6 +69,9 @@ public class SMTPServiceImpl implements SMTPService{
             smtpInfo.setEmail(smtpInfoPublisher.getEmail());
             smtpInfo.setPassword(smtpInfoPublisher.getPassword());
         }
+        if(smtpInfo.getStatus() != smtpInfoPublisher.getStatus() && smtpInfoPublisher.getStatus() != null){
+            smtpInfo.setStatus(smtpInfoPublisher.getStatus());
+        }
 
         smtpRepository.save(smtpInfo).block();
 
