@@ -8,9 +8,8 @@ import reactor.core.publisher.Mono;
 public interface IMAPService {
     Flux<IMAPInfo> listAllIMap();
     Mono<IMAPInfo> getIMAPtById(String id);
-    Mono<Boolean> isExistIMAPtByEmail(String email);
+    Boolean isExistIMAPtByEmail(String email);
     Mono<IMAPInfo> createNewIMAP(IMAPInfo imapInfo,String clientId);
     Mono<IMAPInfo> updateIMAP(String id,IMAPInfo imapInfo);
     Mono<IMAPInfo> patchIMAP(String id,IMAPInfo imapInfo);
-    Mono<Void> removeIMAP(String id);
 }

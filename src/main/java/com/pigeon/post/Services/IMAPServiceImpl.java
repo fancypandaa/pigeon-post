@@ -4,11 +4,13 @@ import com.pigeon.post.models.Client;
 import com.pigeon.post.models.IMAPInfo;
 import com.pigeon.post.repositories.ClientRepository;
 import com.pigeon.post.repositories.IMAPRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
+@Slf4j
 public class IMAPServiceImpl implements IMAPService{
     private final IMAPRepository imapRepository;
     private final ClientRepository clientRepository;
@@ -29,27 +31,28 @@ public class IMAPServiceImpl implements IMAPService{
     }
 
     @Override
-    public Mono<Boolean> isExistIMAPtByEmail(String email) {
-        IMAPInfo imapInfo = imapRepository.findIMAPInfoByEmail(email);
+    public Boolean isExistIMAPtByEmail(String email) {
+        IMAPInfo imapInfo = imapRepository.findIMAPInfoByEmail(email).blockFirst();
         if(imapInfo != null){
-            return Mono.just(false);
+            return false;
         }
-        return Mono.just(true);
+        return true;
     }
 
     @Override
     public Mono<IMAPInfo> createNewIMAP(IMAPInfo imapInfo,String clientId) {
-        if(isExistIMAPtByEmail(imapInfo.getEmail()).block()== true){
+        if(isExistIMAPtByEmail(imapInfo.getEmail()) != true){
+            log.error("The email u selected Already exist");
             return null;
         }
         Client client  = clientRepository.findById(clientId).block();
         if(client.getId() == null) return Mono.empty();
-        else{
-            client.addiMAPs(imapInfo);
-            Client client1 =clientRepository.save(client).block();
-        }
-        return imapRepository.save(imapInfo);
-    }
+        IMAPInfo imapInfo1 = imapRepository.save(imapInfo).block();
+        client.addiMAPs(imapInfo1);
+        clientRepository.save(client).block();
+
+        return Mono.just(imapInfo1);
+     }
 
     @Override
     public Mono<IMAPInfo> updateIMAP(String id, IMAPInfo imapInfo) {
@@ -64,18 +67,15 @@ public class IMAPServiceImpl implements IMAPService{
         if(imapInfo.getPassword() != imapInfoPublisher.getPassword() && imapInfo.getEmail() == imapInfoPublisher.getEmail() ){
             imapInfo.setPassword(imapInfoPublisher.getPassword());
         }
-        if(imapInfo.getUsage() != imapInfoPublisher.getUsage()){
+        if(imapInfo.getUsage() != imapInfoPublisher.getUsage() && imapInfoPublisher.getUsage() != null){
             imapInfo.setUsage(imapInfoPublisher.getUsage());
         }
-        if(imapInfo.getStorage() != imapInfoPublisher.getStorage()){
+        if(imapInfo.getStorage() != imapInfoPublisher.getStorage() && imapInfoPublisher.getStorage() != null){
             imapInfo.setStorage(imapInfoPublisher.getStorage());
         }
-        imapRepository.save(imapInfo);
+        imapRepository.save(imapInfo).block();
         return Mono.just(imapInfo);
     }
 
-    @Override
-    public Mono<Void> removeIMAP(String id) {
-        return imapRepository.deleteById(id).then();
-    }
+
 }
