@@ -1,10 +1,7 @@
 package com.pigeon.post.controllers;
 
 import com.pigeon.post.Services.IMAPService;
-import com.pigeon.post.models.Client;
 import com.pigeon.post.models.IMAPInfo;
-import com.pigeon.post.repositories.ClientRepository;
-import com.pigeon.post.repositories.IMAPRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +9,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-public class iMAPController {
+public class IMAPController {
     private final IMAPService imapService;
 
-    public iMAPController(IMAPService imapService) {
+    public IMAPController(IMAPService imapService) {
         this.imapService = imapService;
     }
 
@@ -46,9 +43,9 @@ public class iMAPController {
     Mono<IMAPInfo> patchIMAP(@PathVariable String id,@RequestBody IMAPInfo imapInfoPublisher){
         return imapService.patchIMAP(id,imapInfoPublisher);
     }
-    @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/api/v1/clients/{id}")
-    Mono<Void> deleteIMAP(@PathVariable String id){
-        return imapService.removeIMAP(id);
-    }
+//    @ResponseStatus(HttpStatus.OK)
+//    @DeleteMapping("/api/v1/clients/{id}")
+//    Mono<Void> deleteIMAP(@PathVariable String id){
+//        return imapService.removeIMAP(id);
+//    }
 }

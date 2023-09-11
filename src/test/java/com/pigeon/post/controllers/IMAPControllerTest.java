@@ -4,8 +4,6 @@ import com.pigeon.post.Services.IMAPService;
 import com.pigeon.post.Services.IMAPServiceImpl;
 import com.pigeon.post.models.Client;
 import com.pigeon.post.models.IMAPInfo;
-import com.pigeon.post.models.MailProvider;
-import com.pigeon.post.models.SMTPInfo;
 import com.pigeon.post.repositories.ClientRepository;
 import com.pigeon.post.repositories.IMAPRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,24 +13,23 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
-class iMAPControllerTest {
+class IMAPControllerTest {
 
     WebTestClient webTestClient;
     IMAPRepository imapRepository;
     IMAPService imapService;
-    iMAPController iMAPController;
+    IMAPController iMAPController;
     ClientRepository clientRepository;
     @BeforeEach
     void setUp() {
         imapRepository = Mockito.mock(IMAPRepository.class);
         clientRepository = Mockito.mock(ClientRepository.class);
         imapService = new IMAPServiceImpl(imapRepository,clientRepository);
-        iMAPController = new iMAPController(imapService);
+        iMAPController = new IMAPController(imapService);
 
         webTestClient = WebTestClient.bindToController(iMAPController).build();
     }
