@@ -27,12 +27,15 @@ public class MailMessage {
     String subject;
     String replyTo;
     String forwardTo;
-    String contentType;
+
 //    mail body
     @Lob
     String message;
+
     @Lob
     Byte[] attachment;
+    String contentType;
+    String attachmentUrl;
 //    mail references
     ArrayList<Long> references = new ArrayList<>();
 
