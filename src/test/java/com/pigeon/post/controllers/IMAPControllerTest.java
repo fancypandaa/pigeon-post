@@ -39,7 +39,7 @@ class IMAPControllerTest {
         given(imapService.listAllIMap())
                 .willReturn(Flux.just(IMAPInfo.builder().email("ml@mail.cm").build(),
                         IMAPInfo.builder().password("dfsf").build(),
-                        IMAPInfo.builder().Storage("200").build()));
+                        IMAPInfo.builder().storage("200").build()));
         webTestClient.get()
                 .uri("/api/v1/imap")
                 .exchange().expectBodyList(IMAPInfo.class).hasSize(3);

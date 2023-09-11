@@ -73,6 +73,9 @@ public class IMAPServiceImpl implements IMAPService{
         if(imapInfo.getStorage() != imapInfoPublisher.getStorage() && imapInfoPublisher.getStorage() != null){
             imapInfo.setStorage(imapInfoPublisher.getStorage());
         }
+        if(imapInfo.getStatus() != imapInfoPublisher.getStatus()&& imapInfoPublisher.getStatus() != null){
+            imapInfo.setStatus(imapInfoPublisher.getStatus());
+        }
         imapRepository.save(imapInfo).block();
         return Mono.just(imapInfo);
     }

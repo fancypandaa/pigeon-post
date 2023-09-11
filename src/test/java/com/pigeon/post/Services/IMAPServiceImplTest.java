@@ -35,7 +35,7 @@ class IMAPServiceImplTest {
         given(imapRepository.findAll())
                 .willReturn(Flux.just(IMAPInfo.builder().email("ml@mail.cm").build(),
                         IMAPInfo.builder().password("dfsf").build(),
-                        IMAPInfo.builder().Storage("200").build()));
+                        IMAPInfo.builder().storage("200").build()));
     }
 
     @Test
