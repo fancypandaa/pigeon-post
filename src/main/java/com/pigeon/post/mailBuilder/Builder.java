@@ -1,9 +1,9 @@
 package com.pigeon.post.mailBuilder;
 
-import com.pigeon.post.models.MailMessage;
+import com.pigeon.post.models._MailMessage;
 import com.pigeon.post.models.SMTPInfo;
 
 public interface Builder {
-    void createTextMail(SMTPInfo smtpInfo, MailMessage mailMessage);
-    void createMailWithAttachment(SMTPInfo smtpInfo,MailMessage mailMessage);
+    void createTextMail(SMTPInfo smtpInfo, _MailMessage mailMessage);
+    void createMailWithAttachment(SMTPInfo smtpInfo, _MailMessage mailMessage);
 }
