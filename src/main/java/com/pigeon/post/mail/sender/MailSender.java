@@ -25,6 +25,7 @@ public class MailSender {
             props.put("mail.smtp.auth", smtpInfo.getHostProvider().auth);
             props.put("mail.smtp.starttls.enable",smtpInfo.getHostProvider().ttls);
             props.put("mail.debug", "true");
+            mailSender.setJavaMailProperties(props);
             return mailSender;
         } catch (MailException mailException){
             mailException.printStackTrace();
