@@ -1,15 +1,14 @@
 package com.pigeon.post.Services;
 
-import com.pigeon.post.models.Client;
-import com.pigeon.post.models.MailMessage;
+import com.pigeon.post.models._MailMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface MailMessageService {
-    Flux<MailMessage> listAllMailMsg();
-    Mono<MailMessage> getMailById(String id);
-    Mono<MailMessage> createNewMail(MailMessage mailMessage);
-    Mono<MailMessage> updateMailMsg(String id,MailMessage mailMessage);
-    Mono<MailMessage> patchMailMsg(String id,MailMessage mailMessage);
+    Flux<_MailMessage> listAllMailMsg();
+    Mono<_MailMessage> getMailById(String id);
+    Mono<_MailMessage> createNewMail(_MailMessage mailMessage);
+    Mono<_MailMessage> updateMailMsg(String id, _MailMessage mailMessage);
+    Mono<_MailMessage> patchMailMsg(String id, _MailMessage mailMessage);
     Mono<Void> removeMailMsg(String id);
 }
