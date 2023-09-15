@@ -67,8 +67,14 @@ public class MailMessageImpl implements MailMessageService{
         if(mailMessage.getFrom() != null) {
             message.setFrom(mailMessage.getFrom());
         }
-        if(mailMessage.getTo() != null) {
-            message.setTo(mailMessage.getTo());
+        if(mailMessage.getTO() != null) {
+            message.setTO(mailMessage.getTO());
+        }
+        if(mailMessage.getCC() != null) {
+            message.setCC(mailMessage.getCC());
+        }
+        if(mailMessage.getBCC() != null) {
+            message.setBCC(mailMessage.getBCC());
         }
         if(mailMessage.getDate() != null) {
             message.setDate(mailMessage.getDate());

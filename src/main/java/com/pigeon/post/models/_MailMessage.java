@@ -1,6 +1,11 @@
 package com.pigeon.post.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
+import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.models.parameters.SerializableParameter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,9 +13,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.data.util.Pair;
+import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import javax.mail.Message;
+import javax.lang.model.element.Element;
 import javax.persistence.Lob;
+import java.io.Serializable;
 import java.util.*;
 
 @Document
@@ -18,7 +26,6 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonSerialize
 public class _MailMessage {
 
     @MongoId
@@ -27,7 +34,10 @@ public class _MailMessage {
     String messageId;
     String from;
     //    1 or m
-    Set<Pair<RecipientType,String>> to= new HashSet<>();
+    Set<String> TO= new HashSet<>();
+    Set<String> CC= new HashSet<>();
+    Set<String> BCC= new HashSet<>();
+
     String date;
     String subject;
     //    CC or m
@@ -38,18 +48,27 @@ public class _MailMessage {
     @Lob
     String message;
     String type;
-    @Lob
-    Byte[] attachment;
     String contentType;
+
+    @Lob
+    MultipartFile attachment;
+    String attachmentId;
     String attachmentUrl;
 //    mail references
     ArrayList<String> references = new ArrayList<>();
 
-    public _MailMessage _to(RecipientType type, String email){
-        this.to.add(Pair.of(type,email));
+    public _MailMessage _TO_( String email){
+        this.TO.add(email);
         return this;
     }
-
+    public _MailMessage _CC_( String email){
+        this.CC.add(email);
+        return this;
+    }
+    public _MailMessage _BCC_( String email){
+        this.BCC.add(email);
+        return this;
+    }
     public _MailMessage replyIds(String reply){
         this.replyTo.add(reply);
         return this;
