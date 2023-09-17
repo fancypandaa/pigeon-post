@@ -6,9 +6,11 @@ import com.pigeon.post.mailBuilder.EmailBuilder;
 import com.pigeon.post.models.RecipientType;
 import com.pigeon.post.models._MailMessage;
 import com.pigeon.post.models.SMTPInfo;
+import com.pigeon.post.rabbitmq.Sender;
 import com.pigeon.post.repositories.ClientRepository;
 import com.pigeon.post.repositories.SMTPRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
@@ -75,5 +77,12 @@ public class MailSenderController extends MailSender {
             emailBuilder.createMailWithAttachment(smtpInfo, message);
         }
         return Mono.empty();
+    }
+    @Autowired
+    Sender rabbitMQSender;
+    @PostMapping("/sender")
+    public String producer(@RequestBody String x) {
+        rabbitMQSender.send(x);
+        return "Message sent to the RabbitMQ Queue Successfully";
     }
 }
