@@ -81,7 +81,7 @@ public class MailSenderController extends MailSender {
     @Autowired
     Sender rabbitMQSender;
     @PostMapping("/sender")
-    public String producer(@RequestBody String x) {
+    public String producer(@RequestBody _MailMessage x) {
         rabbitMQSender.send(x);
         return "Message sent to the RabbitMQ Queue Successfully";
     }
