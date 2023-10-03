@@ -1,0 +1,28 @@
+# Log level
+logging:
+  level:
+    root: INFO
+    com.huytmb: DEBUG
+    org.springframework.integration: DEBUG
+
+# Mail
+mail:
+  imap:
+    host: imap.gmail.com
+    port: 993
+    username: funnytest49@gmail.com
+    password: wbvzjjrsevuapyyv
+
+# Task execution
+spring:
+  task:
+    execution:
+      thread-name-prefix: autohost-task-
+      pool:
+        core-size: 2
+        max-size: 200
+        queue-capacity: 10000
+    scheduling:
+      thread-name-prefix: mail-receiver-
+      pool:
+        size: 2
