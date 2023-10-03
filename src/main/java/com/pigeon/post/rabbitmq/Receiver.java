@@ -17,7 +17,6 @@ public class Receiver {
         logger.info("Mail listener invoked - Consuming Message: " + message.getMessageId());
         latch.countDown();
     }
-
     public CountDownLatch getLatch() {
         return latch;
     }
