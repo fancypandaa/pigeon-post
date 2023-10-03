@@ -23,7 +23,7 @@ public class IMAPInfo {
     private String email;
     private String password;
     @Enumerated(value = EnumType.STRING)
-    private MailProvider hostProvider;
+    private IMAPProvider hostProvider;
     private String storage;
     private Long usage;
     @Enumerated(value = EnumType.STRING)
