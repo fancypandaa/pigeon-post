@@ -33,11 +33,11 @@ public class BootstrapTables implements CommandLineRunner {
         client.setBusinessName("LOL");
         client.setPricePackage(PricePackage.FREE);
         client.setBusinessType("Sport");
-        Optional<IMAPInfo> imapInfoOptional= imapRepository.findById("64ed176dfb1470579e229216").blockOptional();
+        Optional<IMAPInfo> imapInfoOptional= imapRepository.findById("651b37fd14075f4673ec1fee").blockOptional();
         if(!imapInfoOptional.isPresent()){
             throw new RuntimeException("Expected imapInfoOptional Not Found");
         }
-        Optional<SMTPInfo> smtpInfoOptional= SMTPRepository.findById("64ecb800ae8a5b15d3c2ee23").blockOptional();
+        Optional<SMTPInfo> smtpInfoOptional= SMTPRepository.findById("651b37fe14075f4673ec1fef").blockOptional();
         if(!smtpInfoOptional.isPresent()){
             throw new RuntimeException("Expected imapInfoOptional Not Found");
         }
@@ -50,10 +50,10 @@ public class BootstrapTables implements CommandLineRunner {
 
     public void IMAPData(){
         IMAPInfo imapInfo= IMAPInfo.builder().build();
-        imapInfo.setEmail("LOL@mai.com");
-        imapInfo.setPassword("LOL123");
+        imapInfo.setEmail("funnytest49@gmail.com");
+        imapInfo.setPassword("wbvzjjrsevuapyyv");
         imapInfo.setStorage("10GB");
-        imapInfo.setHostProvider(MailProvider.HOTMAIL);
+        imapInfo.setHostProvider(IMAPProvider.GMAIL);
         imapInfo.setUsage(2L);
         imapRepository.save(imapInfo).block();
     }
