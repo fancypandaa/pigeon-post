@@ -25,3 +25,4 @@ services:
 #      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
 
 #sudo docker exec -it scripts_mongo_1  mongosh --username admin --password  --authenticationDatabase
+#  └─$ sudo docker exec -it scripts_rabbitmq_1 rabbitmqctl start_app
