@@ -1,22 +1,17 @@
 package com.pigeon.post.Services;
 
-import com.pigeon.post.models.MailBackBone;
 import com.pigeon.post.models._MailMessage;
 import com.pigeon.post.repositories.MailMessageRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-
 @Service
-public class MailMessageImpl implements MailMessageService{
+public class MailMessageServiceImpl implements MailMessageService{
     private final MailMessageRepository mailMessageRepository;
-    private final MailBackBoneService mailBackBoneService;
 
-    public MailMessageImpl(MailMessageRepository mailMessageRepository, MailBackBoneService mailBackBoneService) {
+    public MailMessageServiceImpl(MailMessageRepository mailMessageRepository) {
         this.mailMessageRepository = mailMessageRepository;
-        this.mailBackBoneService = mailBackBoneService;
     }
 
 
@@ -32,26 +27,6 @@ public class MailMessageImpl implements MailMessageService{
 
     @Override
     public Mono<_MailMessage> createNewMail(_MailMessage mailMessage) {
-//        MailBackBone mailLog= mailBackBoneService.getMailByRootId(mailMessage.getMessageId()).block();
-//        if(mailLog.getId() != null){
-//            mailLog.getMessagesIdMirror().add(mailMessage.getMessageId());
-//            if(mailMessage.getReplyTo() != null ) mailLog.setReplyIds((ArrayList<String>) mailMessage.getReplyTo());
-//            if(mailMessage.getForwardTo() != null) mailLog.setForwardIds((ArrayList<String>) mailMessage.getForwardTo());
-//            if(mailMessage.getReferences() != null) {
-//              mailMessage.getReferences().forEach(mMessage -> mailLog.getMessagesIdMirror().add(mMessage.toString()));
-//            }
-//        }
-//        else {
-//            MailBackBone mailBackBone= new MailBackBone();
-//            mailBackBone.setRootMessageId(mailMessage.getMessageId());
-//            mailBackBone.getMessagesIdMirror().add(mailMessage.getMessageId());
-//            if(mailMessage.getReplyTo() != null) mailBackBone.setReplyIds((ArrayList<String>) mailMessage.getReplyTo());
-//            if(mailMessage.getForwardTo() != null) mailBackBone.setForwardIds((ArrayList<String>) mailMessage.getForwardTo());
-//            if(mailMessage.getReferences() != null) {
-//                mailMessage.getReferences().forEach(mMessage -> mailBackBone.getMessagesIdMirror().add(mMessage.toString()));
-//            }
-//            mailBackBoneService.createNewMailBB(mailBackBone);
-//        }
         return mailMessageRepository.save(mailMessage);
     }
 
