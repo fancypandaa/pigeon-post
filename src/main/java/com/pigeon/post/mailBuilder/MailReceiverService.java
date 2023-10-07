@@ -1,5 +1,7 @@
 package com.pigeon.post.mailBuilder;
 
+import com.pigeon.post.Services.MailMessageService;
+import com.pigeon.post.models._MailMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.mail.util.MimeMessageParser;
@@ -18,6 +20,12 @@ import java.util.*;
 public class MailReceiverService implements MailReceiverBuilder {
     private static final String DOWNLOAD_FOLDER = "data";
     private static final String DOWNLOAD_MAIL_FOLDER ="DOWNLOADED";
+    private final MailMessageService mailMessageService;
+
+    public MailReceiverService(MailMessageService mailMessageService) {
+        this.mailMessageService = mailMessageService;
+    }
+
     @Override
     public void handleReceivedMail(MimeMessage receivedMessage) {
         try {
@@ -26,6 +34,7 @@ public class MailReceiverService implements MailReceiverBuilder {
             Folder folder = receivedMessage.getFolder();
             folder.open(Folder.READ_WRITE);
             Message[] messages= folder.getMessages();
+
             fetchMessagesInFolder(folder,messages);
             Arrays.asList(messages).stream().filter(message -> {
                 MimeMessage currentMessage = (MimeMessage) message;
@@ -37,6 +46,9 @@ public class MailReceiverService implements MailReceiverBuilder {
                 }
             }).forEach(this::extractMail);
             copyMailToDownloadFolder(receivedMessage,folder);
+            parseMimeMessageToMailMessage(receivedMessage);
+            System.out.println(receivedMessage.getMessageID()+"sssssssssssss");
+
             folder.close();
         }catch (Exception ex){
             log.error("Error Handle Mail"+ex);
@@ -112,6 +124,20 @@ public class MailReceiverService implements MailReceiverBuilder {
             } catch (IOException e) {
                 log.error("An error occurred during create folder: {}", directoryPath, e);
             }
+        }
+    }
+
+    private void parseMimeMessageToMailMessage(MimeMessage mimeMessage){
+        try {
+            _MailMessage mailMessage= new _MailMessage();
+            mailMessage.setMessageId(mimeMessage.getMessageID());
+            mailMessage.setMessage(mimeMessage.getDescription());
+            mailMessage.setContentType(mimeMessage.getContentType());
+            mailMessage.setFrom(Arrays.toString(mimeMessage.getFrom()));
+            mailMessage.setSubject(mimeMessage.getSubject());
+            this.mailMessageService.createNewMail(mailMessage).block();
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
         }
     }
 }
