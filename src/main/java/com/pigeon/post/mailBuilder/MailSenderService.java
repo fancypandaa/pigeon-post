@@ -2,36 +2,30 @@ package com.pigeon.post.mailBuilder;
 
 import com.pigeon.post.Services.MailMessageService;
 import com.pigeon.post.mail.sender.MailSubject;
-import com.pigeon.post.models.RecipientType;
 import com.pigeon.post.models._MailMessage;
 import com.pigeon.post.models.SMTPInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.InputStreamSource;
-import org.springframework.data.util.Pair;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import javax.activation.DataSource;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
 import java.io.*;
-import java.util.*;
 
-@Component
+@Service
 @Slf4j
-public class EmailBuilder implements Builder{
+public class MailSenderService implements MailSenderBuilder {
     private final int MAX_EMAIL=5;
     private final MailMessageService mailMessageService;
     private final MailSubject mailSubject;
 
-    public EmailBuilder(MailMessageService mailMessageService, MailSubject mailSubject) {
+    public MailSenderService(MailMessageService mailMessageService, MailSubject mailSubject) {
         this.mailMessageService = mailMessageService;
         this.mailSubject = mailSubject;
     }

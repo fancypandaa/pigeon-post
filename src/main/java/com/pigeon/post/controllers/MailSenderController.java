@@ -2,7 +2,7 @@ package com.pigeon.post.controllers;
 
 import com.pigeon.post.mail.sender.MailSender;
 import com.pigeon.post.mail.sender.MailSubject;
-import com.pigeon.post.mailBuilder.EmailBuilder;
+import com.pigeon.post.mailBuilder.MailSenderService;
 import com.pigeon.post.models.RecipientType;
 import com.pigeon.post.models._MailMessage;
 import com.pigeon.post.models.SMTPInfo;
@@ -23,9 +23,9 @@ public class MailSenderController extends MailSender {
     private final SMTPRepository smtpRepository;
     private final ClientRepository clientRepository;
     private final MailSubject mailSubject;
-    private final EmailBuilder emailBuilder;
+    private final MailSenderService emailBuilder;
 
-    public MailSenderController(SMTPRepository smtpRepository, ClientRepository clientRepository, MailSubject mailSubject, EmailBuilder emailBuilder) {
+    public MailSenderController(SMTPRepository smtpRepository, ClientRepository clientRepository, MailSubject mailSubject, MailSenderService emailBuilder) {
         this.smtpRepository = smtpRepository;
         this.clientRepository = clientRepository;
         this.mailSubject = mailSubject;
