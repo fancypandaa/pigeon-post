@@ -25,9 +25,9 @@ public class Client {
     private String status;
     private String alias;
     @DBRef
-    private List<IMAPInfo> iMAPs;
+    private List<IMAPInfo> iMAPs=new ArrayList<>();
     @DBRef
-    private List<SMTPInfo> sMTPs;
+    private List<SMTPInfo> sMTPs=new ArrayList<>();
 
     public Client addiMAPs(IMAPInfo iMAP){
         this.iMAPs.add(iMAP);
